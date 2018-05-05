@@ -22,6 +22,7 @@
 
         <!--Avatar-->
         <ImageView
+            android:id="@+id/imvAvatar"
             android:scaleType="centerInside"
             android:layout_gravity="center_horizontal"
             android:layout_width="@dimen/icon"
@@ -41,10 +42,11 @@
                 android:layout_height="wrap_content" />
             <!--TextField-->
             <EditText
-                android:inputType="textEmailAddress"
-                android:hint="@string/name"
+                android:inputType="text"
+                android:id="@+id/edtName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="@string/name" />
 
         </LinearLayout>
         <!--Email-->
@@ -61,6 +63,7 @@
                 android:layout_height="wrap_content" />
             <!--TextField-->
             <EditText
+                android:id="@+id/edtEmail"
                 android:inputType="textEmailAddress"
                 android:hint="@string/email"
                 android:layout_width="match_parent"
@@ -81,7 +84,8 @@
                 android:layout_height="wrap_content" />
             <!--TextField-->
             <EditText
-                android:inputType="textEmailAddress"
+                android:id="@+id/edtPassword"
+                android:inputType="textPassword"
                 android:hint="@string/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
