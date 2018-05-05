@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "701897189965",
+    "firebase_url": "https://find-friend-32584.firebaseio.com",
+    "project_id": "find-friend-32584",
+    "storage_bucket": "find-friend-32584.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701897189965:android:f4e8470b4a32c58f",
+        "android_client_info": {
+          "package_name": "kasidis.suthison.com.findfriend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "701897189965-dijk6nnev3i3hb2f1ibaps6sgtuq91d0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kasidis.suthison.com.findfriend",
+            "certificate_hash": "caaffdd724e9dca79946d155c05ef7b6a46e1198"
+          }
+        },
+        {
+          "client_id": "701897189965-312langrn6la3i8ljjddp65vp9kifmgv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR2sGB6zoS8X8iChIsKr94uLezUhut02U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "701897189965-312langrn6la3i8ljjddp65vp9kifmgv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
