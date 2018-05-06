@@ -2,6 +2,7 @@ package kasidis.suthison.com.findfriend;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import kasidis.suthison.com.findfriend.fragment.MainFragment;
 
@@ -19,5 +20,11 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
+    }   //Main Method
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Toast.makeText(this, "Cannot Undo", Toast.LENGTH_SHORT).show();
     }
-}
+}//Main Class

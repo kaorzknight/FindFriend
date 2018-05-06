@@ -1,5 +1,6 @@
 package kasidis.suthison.com.findfriend.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,11 +21,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -32,6 +37,7 @@ import com.google.firebase.storage.UploadTask;
 import kasidis.suthison.com.findfriend.MainActivity;
 import kasidis.suthison.com.findfriend.R;
 import kasidis.suthison.com.findfriend.util.MyAlert;
+import kasidis.suthison.com.findfriend.util.UserModel;
 
 public class RegisterFragment extends Fragment {
 
@@ -39,6 +45,7 @@ public class RegisterFragment extends Fragment {
     private Uri uri;
     private ImageView imageView;
     private Boolean chooseBool = true;
+    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
@@ -109,6 +116,11 @@ public class RegisterFragment extends Fragment {
         if (item.getItemId() == R.id.itemUploadValue) {
 
             // TODO
+
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setTitle("Please Wait ...");
+            progressDialog.show();
+
             checkTextField();
             return true;
         }
@@ -130,12 +142,14 @@ public class RegisterFragment extends Fragment {
         if(chooseBool == true){
             //Haven't choosed image yet
             myAlert.normalDialog("You didn't choose image","Please choose your avatar");
+            progressDialog.dismiss();
         }
         else if(nameString.isEmpty()
                 || emailString.isEmpty()
                 || paswordString.isEmpty()){
 //            Have Space
             myAlert.normalDialog(getString(R.string.title_space),getString(R.string.message_space));
+            progressDialog.dismiss();
         }
         else{
 //            No Space
@@ -160,7 +174,8 @@ public class RegisterFragment extends Fragment {
                     findPathAvatar();
 
                 }else{
-                    Log.d("inn", "Upload Image Fail because >> " +task.getException().getMessage().toString());
+                    Log.d("inn", "Upload Image Fail because >> " + task.getException().getMessage().toString());
+                    progressDialog.dismiss();
                 }
             }
         });
@@ -214,11 +229,50 @@ public class RegisterFragment extends Fragment {
 
         uidUserString = firebaseUser.getUid();
         Log.d("inn","uidUser ==> "+ uidUserString);
+
+//        Setup DisplayName
+        UserProfileChangeRequest.Builder builder = new UserProfileChangeRequest.Builder();
+        builder.setDisplayName(nameString);
+
+        UserProfileChangeRequest userProfileChangeRequest = builder.build();
+        firebaseUser.updateProfile(userProfileChangeRequest).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                updateNewUserToFirebase();
+            }
+        });
+
+
     }
 
-    private void uploadTextToFirebase() {
+    private void updateNewUserToFirebase() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference()
+                .child(uidUserString);
 
+        UserModel userModel = new UserModel(nameString, pathAvatarString);
+
+        databaseReference.setValue(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("inn", "Success Update");
+                progressDialog.dismiss();
+
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.contentMainFragment, new ServiceFragment())
+                        .commit();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("inn", "Cannot Update ==> "+ e.toString());
+            }
+        });
     }
+
 
     private void createToolbar() {
         Toolbar toolbar = getView().findViewById(R.id.toolbarRegister);
